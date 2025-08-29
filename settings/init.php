@@ -2,6 +2,8 @@
 define('ASSETS_PATH', '....');
 define('DEFAULT_CONTROLLER', isset($_SESSION['username']) ? 'home' : 'login');
 
+define('DEBUG_MODE', true);
+
 define('DB_HOST', '...');
 define('DB_NAME', '...');
 define('DB_USER', '...');

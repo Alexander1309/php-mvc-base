@@ -1,5 +1,4 @@
 <?php
-require_once 'controllers/ErrorController.php';
 
 class App
 {
@@ -126,9 +125,20 @@ class App
 	private function handleError(string $errorMessage): void
 	{
 		error_log("[App Router Error] " . $errorMessage);
-		if (class_exists('ErrorController')) {
-			new ErrorController([$errorMessage]);
+
+		// Usar el sistema automático de errores
+		if (class_exists('ErrorHandler')) {
+			// Determinar el tipo de error basado en el mensaje
+			if (
+				strpos($errorMessage, 'no encontrado') !== false ||
+				strpos($errorMessage, 'not found') !== false
+			) {
+				ErrorHandler::handle404($errorMessage);
+			} else {
+				ErrorHandler::handle500($errorMessage);
+			}
 		} else {
+			// Fallback básico si no está disponible el ErrorHandler
 			http_response_code(404);
 			echo "Error: " . htmlspecialchars($errorMessage);
 		}
